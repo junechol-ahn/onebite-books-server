@@ -1,15 +1,12 @@
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
-import { delay } from "@/util/delay";
 import { Suspense } from "react";
-import Loading from "./loading";
 import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 
 async function SearchResult(
   {searchParams} : {searchParams: Promise<{q:string}>}
 ) {
   const {q} = await searchParams
-  await delay(1500)
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     {cache: 'force-cache'}
@@ -29,6 +26,22 @@ async function SearchResult(
   );
 }
 
+export async function generateMetadata(
+  {searchParams}: 
+  {searchParams:Promise<{q?:string}>}
+) {
+  const {q} = await searchParams
+
+  return {
+    title: `한입 북스 검색 : ${q}`,
+    description: `${q}의 검색 결과입니다`,
+    openGraph: {
+      title: `한입 북스 검색 : ${q}`,
+      description: `${q}의 검색 결과입니다`,
+      images: ['/thumbnail.png'],
+    }
+  }
+}
 
 export default async function Page({
   searchParams,
