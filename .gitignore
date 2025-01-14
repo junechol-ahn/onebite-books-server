@@ -3,6 +3,9 @@
 /node_modules
 /build
 
+/section04/node_modules
+/section04/.next
+
 # Logs
 logs
 *.log
